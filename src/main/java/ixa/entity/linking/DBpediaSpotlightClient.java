@@ -125,10 +125,10 @@ offset="414"/></annotation>
     public Document extract(Text text,String lang) throws AnnotationException{
 
         LOG.info("Querying API.");
-		String spotlightResponse;
+		String spotlightResponse = "";
 		Document doc = null;
 		try {
-		    if (lang.equals("en"){
+		    if (lang.equals("en")){
 			    GetMethod getMethod = new GetMethod(API_URL_EN + "rest/disambiguate?spotter=SpotXmlParser" +
 								"&confidence=" + CONFIDENCE
 								+ "&support=" + SUPPORT
@@ -147,7 +147,7 @@ offset="414"/></annotation>
 			 
 			else {
 			    System.out.println("Language " + lang + " is not provided yet");
-			    exit(0);
+			    System.exit(0);
 			}   
 		} catch (UnsupportedEncodingException e) {
 			throw new AnnotationException("Could not encode text.", e);
