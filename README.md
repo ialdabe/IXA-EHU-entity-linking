@@ -16,7 +16,9 @@ Once the dbpedia-spotlight is installed, continue to step 2
 ### 2 Download IXA-EHU-entity-linking
 
 git clone git@github.com:ialdabe/IXA-EHU-entity-linking.git
+
 OR
+
 git clone  git://github.com/ialdabe/IXA-EHU-entity-linking.git
 
 The command will create a directory called IXA-EHU-entity-linking. This repository contains all the necessary information to install the repository. 
@@ -25,10 +27,9 @@ The command will create a directory called IXA-EHU-entity-linking. This reposito
 
 Before installing IXA-EHU-entity-linking, it is necessary to change the pom.xml file
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <internal.path>/sc04a2/users/jibalari/entitylinking/</internal.path>
-  </properties>
+ <properties>
+   <internal.path>/sc04a2/users/jibalari/entitylinking/</internal.path>
+ </properties>
 
 The internal.path has to point out to the directory where the dbpedia-spotlight-0.6-jar-with-dependencies.jar file is located (previously installed, see step 1)
 
