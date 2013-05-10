@@ -30,7 +30,7 @@ Before installing IXA-EHU-entity-linking, it is necessary to change the pom.xml 
 	  <properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	    <!--maven variable which points to your local spotlight -->
-	    <internal.path>/sc04a2/users/jibalari/entitylinking/</internal.path>
+	    <internal.path>/sc04a2/users/jibalari/entitylinking/dbpedia-spotlight</internal.path>
 	  </properties>
 
 The internal.path has to point out to the directory where the dbpedia-spotlight-0.6-jar-with-dependencies.jar file is located (previously installed, see step 1)
