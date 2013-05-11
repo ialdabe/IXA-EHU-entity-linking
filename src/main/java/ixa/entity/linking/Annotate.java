@@ -54,7 +54,11 @@ public class Annotate {
 		if (!text.isEmpty()) {
 		    text += " ";
 		}
-		text += sentence.get(i).getForm();
+		String tok = sentence.get(i).getForm();
+		if (tok.contains("\"")){
+		    tok = tok.replaceAll("\"","'");
+		}
+		text += tok;
 	    }
 	}
 	
@@ -125,11 +129,13 @@ public class Annotate {
 	for (Entity entity : entities){
 	    // Get the offset of the entity
 	    int offset = getEntityOffset(entity);
-	    String reference = refs.get(offset);
-	    // Create ExternalRef
-	    ExternalRef externalRef = kaf.createExternalRef(resource,reference);	    
-	    // addExternalRef to Entity
-	    entity.addExternalRef(externalRef);
+	    if (refs.containsKey(offset)){
+		String reference = refs.get(offset);
+		// Create ExternalRef
+		ExternalRef externalRef = kaf.createExternalRef(resource,reference);	    
+		// addExternalRef to Entity
+		entity.addExternalRef(externalRef);
+	    }
 	}
     }
 
