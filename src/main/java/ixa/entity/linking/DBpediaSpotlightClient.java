@@ -20,6 +20,10 @@ import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+
+
 import org.dbpedia.spotlight.exceptions.AnnotationException;
 import org.dbpedia.spotlight.model.Text;
 
@@ -45,11 +49,8 @@ import org.apache.log4j.Logger;
 public class DBpediaSpotlightClient {
     public Logger LOG = Logger.getLogger(this.getClass()); 
 
-    //private final static String API_URL = "http://jodaiber.dyndns.org:2222/";
-    private final static String API_URL_EN = "http://localhost:2020/";
-    private final static String API_URL_ES = "http://localhost:2222/";
-	private static final double CONFIDENCE = 0.0;
-	private static final int SUPPORT = 0;
+    private static final double CONFIDENCE = 0.0;
+    private static final int SUPPORT = 0;
 
     // Create an instance of HttpClient.
     private static HttpClient client = new HttpClient();
@@ -122,38 +123,19 @@ Petrobras" offset="365"/><surfaceForm name="Twelve" offset="376"/>
 offset="414"/></annotation>
      */
 
-    public Document extract(Text text,String lang) throws AnnotationException{
+    public Document extract(Text text,int port) throws AnnotationException{
 
         LOG.info("Querying API.");
 		String spotlightResponse = "";
 		Document doc = null;
 		try {
-		    if (lang.equals("en")){
-			    GetMethod getMethod = new GetMethod(API_URL_EN + "rest/disambiguate?spotter=SpotXmlParser" +
-								"&confidence=" + CONFIDENCE
-								+ "&support=" + SUPPORT
-								+ "&text=" + URLEncoder.encode(text.text(), "utf-8"));
-			    getMethod.addRequestHeader(new Header("Accept", "text/xml"));
-			    spotlightResponse = request(getMethod);
-			}
-			else if (lang.equals("es")){
-			    GetMethod getMethod = new GetMethod(API_URL_ES + "rest/disambiguate?spotter=SpotXmlParser" +
-								"&confidence=" + CONFIDENCE
-								+ "&support=" + SUPPORT
-								+ "&text=" + URLEncoder.encode(text.text(), "utf-8"));
-			    getMethod.addRequestHeader(new Header("Accept", "text/xml"));
-			    spotlightResponse = request(getMethod);
-			}
-			 
-			else {
-			    System.out.println("Language " + lang + " is not provided yet");
-			    System.exit(0);
-			}   
-		} catch (UnsupportedEncodingException e) {
-			throw new AnnotationException("Could not encode text.", e);
-		}
-
-		try {
+		    String url = "http://localhost:" + port +"/rest/disambiguate";
+		    PostMethod method = new PostMethod(url);
+		    method.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		    NameValuePair[] params = {new NameValuePair("text",text.text()), new NameValuePair("spotter","SpotXmlParser"), new NameValuePair("confidence",Double.toString(CONFIDENCE)), new NameValuePair("support",Integer.toString(SUPPORT))};
+		    method.setRequestBody(params);
+		    method.setRequestHeader(new Header("Accept", "text/xml"));
+		    spotlightResponse = request(method);
 		    doc = loadXMLFromString(spotlightResponse);
 		}
 		catch (javax.xml.parsers.ParserConfigurationException ex) {

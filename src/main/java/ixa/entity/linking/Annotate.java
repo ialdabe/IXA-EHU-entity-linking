@@ -28,11 +28,10 @@ public class Annotate {
 	c = new DBpediaSpotlightClient ();
     }
 
-    public void disambiguateNEsToKAF (KAFDocument kaf) throws Exception { 
+    public void disambiguateNEsToKAF (KAFDocument kaf,int port) throws Exception { 
 	kaf.addLinguisticProcessor("entity-linking", "ixa-dbpedia-spotlight", "1.0");
-	String lang = kaf.getLang();
 	String annotation = KAF2XMLSpot(kaf);
-	Document response = annotate(annotation,lang);
+	Document response = annotate(annotation,port);
 	XMLSpot2KAF(kaf,response);
     }
 
@@ -98,8 +97,8 @@ public class Annotate {
 	return annotation;
     }
 
-    private Document annotate(String annotation,String lang) throws AnnotationException {
-	Document response = c.extract(new Text(annotation),lang);
+    private Document annotate(String annotation,int port) throws AnnotationException {
+	Document response = c.extract(new Text(annotation),port);
 	return response;
     }
     
@@ -124,7 +123,7 @@ public class Annotate {
 	}
 	
 
-	String resource = "spotlight_en_v1";
+	String resource = "spotlight_v1";
 	List<Entity> entities = kaf.getEntities();
 	for (Entity entity : entities){
 	    // Get the offset of the entity
